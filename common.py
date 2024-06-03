@@ -46,6 +46,7 @@ class CheckedPopen(object):
     # we transparently check return codes for this method now so callers don't have to
 
     def communicate(self, input=None):
+        print("CheckedPopen communicate")
         stdoutdata, stderrdata = self.popen_obj.communicate(input=input)
         stdoutdata = stdoutdata.decode(errors='ignore')
         stderrdata = stderrdata.decode(errors='ignore')
@@ -61,10 +62,12 @@ class CheckedPopen(object):
         return stdoutdata, stderrdata
 
     def wait(self):
+        print("CheckedPopen wait")
         self.communicate()
         return self.myrtncode
 
     def kill(self, sig=signal.SIGINT):
+        print("CheckedPopen kill")
         if self.shell:
             os.killpg(os.getpgid(self.popen_obj.pid), sig)
         else:
@@ -77,6 +80,7 @@ class CheckedPopenLocal(CheckedPopen):
         self.host = host
 
     def communicate(self, input=None):
+        print("CheckedPopenLocal communicate")
         stdout, stderr = super(CheckedPopenLocal, self).communicate()
         stdout = "%s: %s" % (self.host, stdout)
         stderr = "%s: %s" % (self.host, stderr)
@@ -92,6 +96,7 @@ class CheckedPopenLocal(CheckedPopen):
 
 
 def expanded_node_list(nodes):
+    print("CheckedPopenLocal expanded_node_list")
     # nodes is a comma-separated list for pdsh "-w" parameter
     # nodes may have some entries with '^' prefix, pdsh syntax meaning
     # we should read list of actual hostnames/ips from a file
@@ -108,6 +113,7 @@ def expanded_node_list(nodes):
 
 
 def get_localnode(nodes):
+    print("CheckedPopenLocal get_localnode")
     # Similarly to `expanded_node_list(nodes)` we assume the passed nodes
     # param is always string. This is justified as the callers use `nodes`
     # to supply the `-w ...` parameter of ssh during CheckedPopen() call.
@@ -128,11 +134,13 @@ def get_localnode(nodes):
 
 
 def sh(local_node, command, continue_if_error=True):
+    print("CheckedPopenLocal sh")
     return CheckedPopenLocal(local_node, join_nostr(command),
                              continue_if_error=continue_if_error, shell=True)
 
 
 def pdsh(nodes, command, continue_if_error=True):
+    print("CheckedPopenLocal pdsh")
     local_node = get_localnode(nodes)
     if local_node:
         return sh(local_node, command, continue_if_error=continue_if_error)
@@ -150,6 +158,7 @@ def pdsh(nodes, command, continue_if_error=True):
 
 
 def pdcp(nodes, flags, localfile, remotefile):
+    print("CheckedPopenLocal pdcp")
     local_node = get_localnode(nodes)
     if local_node:
         return sh(local_node, ['cp', flags, localfile, remotefile], continue_if_error=False)
@@ -167,6 +176,7 @@ def pdcp(nodes, flags, localfile, remotefile):
 
 
 def rpdcp(nodes, flags, remotefile, localdir):
+    print("CheckedPopenLocal rpdcp")
     local_node = get_localnode(nodes)
     if local_node:
         assert len(expanded_node_list(nodes)) == 1
@@ -188,6 +198,7 @@ def rpdcp(nodes, flags, remotefile, localdir):
 
 
 def scp(node, localfile, remotefile):
+    print("CheckedPopenLocal scp")
     local_node = get_localnode(node)
     if local_node:
         return sh(local_node, ['cp', localfile, remotefile], continue_if_error=False)
@@ -197,6 +208,7 @@ def scp(node, localfile, remotefile):
 
 
 def rscp(node, remotefile, localfile):
+    print("CheckedPopenLocal rscp")
     local_node = get_localnode(node)
     if local_node:
         return sh(local_node, ['cp', remotefile, localfile], continue_if_error=False)
@@ -206,10 +218,12 @@ def rscp(node, remotefile, localfile):
 
 
 def get_fqdn_cmd():
+    print("CheckedPopenLocal get_fqdn_cmd")
     return 'hostname -f'
 
 
 def get_fqdn_list(nodes):
+    print("CheckedPopenLocal get_fqdn_list")
     stdout, stderr = pdsh(settings.getnodes(nodes), '%s' % get_fqdn_cmd()).communicate()
     print(stdout)
     ret = [i.split(' ', 1)[1] for i in stdout.splitlines()]
@@ -218,12 +232,14 @@ def get_fqdn_list(nodes):
 
 
 def get_fqdn_local():
+    print("CheckedPopenLocal get_fqdn_local")
     local_fqdn = socket.getfqdn()
     logger.debug('get_fqdn_local()=%s' % local_fqdn)
     return local_fqdn
 
 
 def clean_remote_dir(remote_dir):
+    print("CheckedPopenLocal clean_remote_dir")
     print("cleaning remote dir {}".format(remote_dir))
     if remote_dir == "/" or not os.path.isabs(remote_dir):
         raise SystemExit("Cleaning the remote dir doesn't seem safe, bailing.")
@@ -234,12 +250,14 @@ def clean_remote_dir(remote_dir):
 
 
 def make_remote_dir(remote_dir):
+    print("CheckedPopenLocal make_remote_dir")
     nodes = settings.getnodes('clients', 'osds', 'mons', 'rgws', 'mds')
     pdsh(nodes, 'mkdir -p -m0755 -- %s' % remote_dir,
          continue_if_error=False).communicate()
 
 
 def sync_files(remote_dir, local_dir):
+    print("CheckedPopenLocal sync_files")
     nodes = settings.getnodes('clients', 'osds', 'mons', 'rgws', 'mds')
 
     if not os.path.exists(local_dir):
@@ -253,6 +271,7 @@ def sync_files(remote_dir, local_dir):
 
 
 def mkdir_p(path):
+    print("CheckedPopenLocal mkdir_p")
     try:
         os.makedirs(path)
     except OSError as exc:  # Python >2.5
@@ -263,6 +282,7 @@ def mkdir_p(path):
 
 
 def setup_valgrind(mode, name, tmp_dir):
+    print("CheckedPopenLocal setup_valgrind")
     valdir = '%s/valgrind' % tmp_dir
     logfile = '%s/%s.log' % (valdir, name)
 
@@ -281,6 +301,7 @@ def setup_valgrind(mode, name, tmp_dir):
 
 
 def get_osd_ra():
+    print("CheckedPopenLocal get_osd_ra")
     for root, directories, files in os.walk('/sys'):
         for filename in files:
             if 'block' in root and 'read_ahead_kb' in filename:
