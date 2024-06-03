@@ -94,6 +94,44 @@ lihaohua@cld-osd16-10080:/usr/local/src/pdsh-pdsh-2.31$ collectl -s+mYZ -i 1:10 
 看起来跑通了
 
 
+## Q
+
+
+Traceback (most recent call last):
+  File "/home/lihaohua/cbt_copy/cbt.py", line 94, in <module>
+    exit(main(sys.argv))
+  File "/home/lihaohua/cbt_copy/cbt.py", line 50, in main
+    import ipdb; ipdb.set_trace()
+ModuleNotFoundError: No module named 'ipdb'
+
+## A
+
+lihaohua@cld-osd17-10080:~/cbt_copy$ pip3 install ipdb
+Defaulting to user installation because normal site-packages is not writeable
+Collecting ipdb
+
+
+## Q
+
+get_localnode ['lihaohua@10.91.132.216'] .i.nease.net cld-osd17-10080 10.91.132.216
+CheckedPopenLocal expanded_node_list
+07:16:07 - DEBUG    - cbt      - CheckedPopen continue_if_error=False, shell=False args=pdsh -S -f 1 -R ssh -w lihaohua@10.91.132.216 sudo mkfs.ext4 /dev/rbd1
+CheckedPopen communicate
+Traceback (most recent call last):
+  File "/home/lihaohua/cbt_copy/cbt.py", line 94, in <module>
+    exit(main(sys.argv))
+  File "/home/lihaohua/cbt_copy/cbt.py", line 65, in main
+    b.initialize()
+  File "/home/lihaohua/cbt_copy/benchmark/kvmrbdfio.py", line 62, in initialize
+    common.pdsh(clnts, 'sudo mkfs.ext4 %s' % b,
+  File "/home/lihaohua/cbt_copy/common.py", line 56, in communicate
+    raise Exception('\n'.join([str(self),
+Exception: checked_Popen args=pdsh -S -f 1 -R ssh -w lihaohua@10.91.132.216 sudo mkfs.ext4 /dev/rbd1 continue_if_error=False rtncode=1
+stdout:
+
+## A
+
+挂载好才可以测试
 
 
 

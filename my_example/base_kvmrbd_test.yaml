@@ -6,6 +6,9 @@ cluster:
   mons: ["10.91.132.216"]  # 监控节点
   use_existing: True
   conf_file: '/etc/ceph/ceph.conf'  # Ceph配置文件路径
+  version_compat: jewel  # Ceph版本
+  iterations: 1  # 测试迭代次数
+  clusterid: "ceph"  # 集群ID
   tmp_dir: "/tmp/cbt"
   pool_profiles:
     replicated:
