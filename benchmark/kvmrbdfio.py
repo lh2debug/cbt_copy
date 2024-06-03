@@ -151,7 +151,7 @@ class KvmRbdFio(Benchmark):
         time.sleep(3)
         common.pdsh(clnts, 'killall -9 fio').communicate()
         time.sleep(3)
-        common.pdsh(clnts, 'rm -rf /srv/*/*',
+        common.pdsh(clnts, 'sudo rm -rf /srv/*/*',
                     continue_if_error=False).communicate()
         common.pdsh(clnts, 'sudo umount /srv/* || echo -n').communicate()
 
