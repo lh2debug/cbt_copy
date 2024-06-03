@@ -750,8 +750,8 @@ class Ceph(Cluster):
         pool_profiles = self.config.get('pool_profiles', {'default': {}})
         profile = pool_profiles.get(profile_name, {})
 
-        pg_size = profile.get('pg_size', 1024)
-        pgp_size = profile.get('pgp_size', 1024)
+        pg_size = profile.get('pg_size', 256)
+        pgp_size = profile.get('pgp_size', 256)
         erasure_profile = profile.get('erasure_profile', '')
         replication = str(profile.get('replication', None))
         ec_overwrites = profile.get('ec_overwrites', False)
