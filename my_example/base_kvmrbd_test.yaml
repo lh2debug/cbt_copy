@@ -1,0 +1,30 @@
+cluster:
+  user: 'lihaohua'  # 运行测试的用户
+  head: "10.91.132.216"  # Ceph monitor节点
+  clients: ["10.91.132.216"]  # 运行客户端基准测试的节点
+  osds: ["10.91.132.216"]  # OSD节点
+  mons: ["10.91.132.216"]  # 监控节点
+  use_existing: True
+  conf_file: '/etc/ceph/ceph.conf'  # Ceph配置文件路径
+  tmp_dir: "/tmp/cbt"
+  pool_profiles:
+    replicated:
+      pg_size: 64
+      pgp_size: 64
+      replication: 3
+      crush_profile: 1
+benchmarks:
+  kvmrbdfio:
+    fio_cmd: /usr/bin/fio
+    time: 60
+    ramp: 20
+    startdelay: 10
+    rate_iops: 2
+    iodepth: [2]
+    numjobs:  1
+    block_devices: /dev/rbd1
+    mode: randwrite
+    # rwmixread: 20
+    op_size: 4096
+    vol_size: 64
+
