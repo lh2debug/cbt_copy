@@ -59,6 +59,7 @@ class CheckedPopen(object):
             else:
                 logger.warning(join_nostr(self.args))
                 logger.warning('error %d seen, continuing anyway...' % self.myrtncode)
+        print("communicate %s %s" % (stdoutdata, stderrdata))
         return stdoutdata, stderrdata
 
     def wait(self):
@@ -109,6 +110,7 @@ def expanded_node_list(nodes):
         else:
             node_list.append(h)
     # logger.info("full list of hosts: %s" % str(full_node_list))
+    print("full list of hosts: %s" % str(full_node_list))
     return node_list
 
 
@@ -128,6 +130,7 @@ def get_localnode(nodes):
     local_short_hostname = local_hostname.split('.')[0]
 
     remote_host = settings.host_info(nodes_list[0])['host']
+    print("get_localnode %s %s %s" % (str(nodes_list), str(local_fqdn), str(local_hostname)))
     if remote_host in (local_fqdn, local_hostname, local_short_hostname):
         return remote_host
     return None
@@ -235,6 +238,7 @@ def get_fqdn_local():
     print("CheckedPopenLocal get_fqdn_local")
     local_fqdn = socket.getfqdn()
     logger.debug('get_fqdn_local()=%s' % local_fqdn)
+    print('get_fqdn_local()=%s' % local_fqdn)
     return local_fqdn
 
 
