@@ -70,5 +70,31 @@ sudo chmod a+r /etc/ceph/ceph.client.admin.keyring
 
 
 
+## Q
+
+
+03:24:54 - DEBUG    - cbt      - CheckedPopen continue_if_error=True, shell=False args=pdsh -f 1 -R ssh -w lihaohua@10.91.132.216 sudo /usr/bin/ceph -c /etc/ceph/ceph.conf daemon osd.0 config show > /tmp/cbt/00000000/Radosbench/osd_ra-00000128/op_size-04194304/concurrent_ops-00000016/write/ceph_settings.out
+CheckedPopen communicate
+communicate  10.91.132.216: Can't get admin socket path: unable to get conf option admin_socket for osd: b"error parsing 'osd': expected string of the form TYPE.ID, valid types are: auth, mon, osd, mds, mgr, client\n"
+pdsh@cld-osd17-10080: 10.91.132.216: ssh exited with exit code 22
+
+## A
+
+没有解决
+
+
+
+## Q
+
+lihaohua@cld-osd16-10080:/usr/local/src/pdsh-pdsh-2.31$ collectl -s+mYZ -i 1:10 -F0 -f /tmp/cbt/00000000/Radosbench/osd_ra-00000128/op_size-04194304/concurrent_ops-00000016/seq/collectl --rawdskfilt "+cciss/c\d+d\d+ |hd[ab] | sd[a-z]+ |dm-\d+ |xvd[a-z] |fio[a-z]+ | vd[a-z]+ |emcpower[a-z]+ |psv\d+ |nvme[0-9]n[0-9]+p[0-9]+ "
+-sy disabled because /proc/slabinfo is not readable by lihaohua
+
+## A
+
+看起来跑通了
+
+
+
+
 
 
