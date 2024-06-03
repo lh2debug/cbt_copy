@@ -1,0 +1,27 @@
+cluster:
+  user: 'lihaohua'  # 运行测试的用户
+  head: "10.91.132.216"  # Ceph monitor节点
+  clients: ["10.91.132.216"]  # 运行客户端基准测试的节点
+  osds: ["10.91.132.216"]  # OSD节点
+  mons: ["10.91.132.216"]  # 监控节点
+  osds_per_node: 3  # 每个节点的OSD数量
+  fs: 'xfs'  # 文件系统类型
+  mkfs_opts: '-f -i size=2048'  # 创建文件系统选项
+  mount_opts: '-o inode64,noatime,logbsize=256k'  # 挂载选项
+  conf_file: '/etc/ceph/ceph.conf'  # Ceph配置文件路径
+  iterations: 1  # 测试迭代次数
+  use_existing: True  # 是否使用现有的Ceph集群
+  version_compat: jewel  # Ceph版本
+  clusterid: "ceph"  # 集群ID
+  tmp_dir: "/tmp/cbt"  # 临时目录
+
+benchmarks:
+  radosbench:
+    pg_num: 512
+    op_size: [1048576, 4194304]  # 操作大小
+    write_only: False  # 是否只写操作
+    time: 300  # 测试持续时间，单位秒
+    concurrent_ops: [16]  # 并发操作数
+    concurrent_procs: 1  # 并发进程数
+    use_existing: True  # 是否使用现有的数据池
+    pool_profile: 'replicated'  # 池配置文件
