@@ -113,7 +113,7 @@ Collecting ipdb
 
 ## Q
 
-get_localnode ['lihaohua@10.91.132.216'] .i.nease.net cld-osd17-10080 10.91.132.216
+get_localnode ['lihaohua@10.91.132.216'] cld-osd17-10080 10.91.132.216
 CheckedPopenLocal expanded_node_list
 07:16:07 - DEBUG    - cbt      - CheckedPopen continue_if_error=False, shell=False args=pdsh -S -f 1 -R ssh -w lihaohua@10.91.132.216 sudo mkfs.ext4 /dev/rbd1
 CheckedPopen communicate
