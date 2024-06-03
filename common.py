@@ -110,7 +110,7 @@ def expanded_node_list(nodes):
         else:
             node_list.append(h)
     # logger.info("full list of hosts: %s" % str(full_node_list))
-    print("full list of hosts: %s" % str(full_node_list))
+    # print("full list of hosts: %s" % str(full_node_list))
     return node_list
 
 
@@ -130,7 +130,7 @@ def get_localnode(nodes):
     local_short_hostname = local_hostname.split('.')[0]
 
     remote_host = settings.host_info(nodes_list[0])['host']
-    print("get_localnode %s %s %s" % (str(nodes_list), str(local_fqdn), str(local_hostname)))
+    print("get_localnode %s %s %s %s" % (str(nodes_list), str(local_fqdn), str(local_hostname), str(remote_host)))
     if remote_host in (local_fqdn, local_hostname, local_short_hostname):
         return remote_host
     return None
