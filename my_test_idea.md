@@ -32,6 +32,38 @@ RbdFio (rbdfio.py): 这个脚本用于运行针对 RBD 的 FIO 测试，它可�
 
 ## 是否可以启动多客户端测试
 
+可以
+
+
+## 可以改测试参数吗
+
+可以理解有的参数可设置，有的参数不可以设置，具体参考脚本参数
+
+参数主要是和性能有关系，比如
+
+  pool_profiles:
+    replication:
+      pg_size: 256
+      pgp_size: 256
+      replication: 1 
+    ec21:
+      pg_size: 2048 
+      pgp_size: 2048
+      replication: 'erasure'
+      erasure_profile: 'ec21'
+
+
+## 可以搞failover吗
+
+通过阅读源码以及测试，已经确定没有办法做failover，像磁盘、网络、进程等的故障需要额外的工具去模拟
+
+
+
+
+
+
+
+
 
 
 
